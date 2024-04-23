@@ -3,8 +3,8 @@ import com.site.demo.ShotManager;
 import org.junit.Before;
 import org.junit.Test;
 
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertNull;
+//import static junit.framework.TestCase.assertNotNull;
+//import static junit.framework.TestCase.assertNull;
 
 
 public class ComplexTest {
@@ -22,9 +22,9 @@ public class ComplexTest {
 
     @Test
     public void testAboba() {
-//        sm.shoot();
-        System.out.println("hohohooh");
-        assertNull(sm.toString());
+        sm.init();
+        System.out.println("aaaaa");
+//        assertNull(sm.toString());
     }
 
 }

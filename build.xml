@@ -34,6 +34,7 @@
     <target name="clean">
         <delete dir="${build.dir}" />
         <delete dir="newDirectory" />
+        <delete dir="${report.dir}"/>
     </target>
 
     <target name="compile-test">
