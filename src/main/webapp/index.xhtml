@@ -1,0 +1,15 @@
+<ui:composition template="templates/base.xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:param name="title" value="Сайтик"/>
+    <ui:define name="content">
+        <section>
+            <article class="first-article">
+                <ui:include src="templates/includes/timer.xhtml"/>
+                <div class="block link">
+                    <p:link outcome="/app" value="Приложуха"/>
+                </div>
+            </article>
+        </section>
+    </ui:define>
+</ui:composition>

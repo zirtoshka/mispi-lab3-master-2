@@ -1,0 +1,26 @@
+<ui:composition xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="http://primefaces.org/ui">
+    <article class="second-article">
+        <div class="block results">
+            <p:dataTable id="table-results" value="#{shotManager.shots}" var="shot" sortMode="single"
+                         styleClass="table-results" style="background: dimgray">
+                <p:column headerText="X">
+                    <h:outputText value="#{shot.x}"/>
+                </p:column>
+                <p:column headerText="Y">
+                    <h:outputText value="#{shot.y}"/>
+                </p:column>
+                <p:column headerText="R">
+                    <h:outputText value="#{shot.r}"/>
+                </p:column>
+                <p:column headerText="Время отправки">
+                    <h:outputText value="#{shot.shotTime}"/>
+                </p:column>
+                <p:column headerText="Результат">
+                    <h:outputText value="#{shot.inArea}"/>
+                </p:column>
+            </p:dataTable>
+        </div>
+    </article>
+</ui:composition>

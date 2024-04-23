@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project default="bogdan">
+    <property file="build.properties" />
+
+    <path id="classpath">
+        <fileset dir="lib" includes="**/*.jar"/>
+    </path>
+
+    <target name="bogdan">
+        <echo message="Hello!" />
+        <mkdir dir="newDirectory" />
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${build.dir}/classes"/>
+        <javac srcdir="${src.dir}" destdir="${build.dir}/classes" >
+            <classpath refid="classpath"/>
+        </javac>
+    </target>
+
+    <target name="build" depends="compile">
+        <jar destfile="${build.dir}/web.jar">
+            <fileset dir="${build.dir}/classes"
+                     excludes="**/*Test.class"/>
+            <fileset dir="${src.dir}/main/resources"/>
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+                <attribute name="Version" value="${version.number}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.dir}" />
+        <delete dir="newDirectory" />
+    </target>
+
+    <target name="compile-test">
+        <mkdir dir="${build.dir}/test-classes"/>
+        <javac srcdir="${test.dir}" destdir="${build.dir}/test-classes" >
+            <classpath refid="classpath"/>
+            <classpath location="${build.dir}/classes"/>
+        </javac>
+    </target>
+
+    <target name="test" depends="build, compile-test">
+        <mkdir dir="${report.dir}"/>
+        <junit printsummary="yes" haltonfailure="no">
+            <classpath>
+                <path refid="classpath"/>
+                <pathelement location="${build.dir}/test-classes"/>
+                <pathelement location="${build.dir}/classes"/>
+            </classpath>
+            <formatter type="xml"/>
+            <batchtest todir="${report.dir}">
+                <fileset dir="${test.dir}">
+                    <include name="**/*Test.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+    <target name="music" depends="build">
+        <taskdef name="sound" classname="org.apache.tools.ant.taskdefs.optional.sound.SoundTask"/>
+        <sound>
+            <success source="${sounds.dir}/${success.sound}"/>
+            <fail source="${sounds.dir}/${fail.sound}"/>
+        </sound>
+    </target>
+
+    <target name="alt" depends="build"
+            description="создаёт альтернативную версию программы с измененными именами переменных и классов (используя задание replace/replaceregexp в файлах параметров) и упаковывает её в jar-архив.">
+        <move file="${src.dir}/main/java/com/site/demo/ShotManager.java"
+              tofile="${src.dir}/main/java/com/site/demo/AltShotManager.java" />
+        <replace token="ShotManager" value="AltShotManager">
+            <fileset dir="${src.dir}/main/java/com/site/demo" includes="**/*.java"/>
+        </replace>
+        <replace token="ShotManager" value="AltShotManager">
+            <fileset dir="${src.dir}/test" includes="**/*.java"/>
+        </replace>
+    </target>
+
+    <target name="re-alt" depends="build"
+            description="создаёт re-альтернативную версию программы с измененными именами переменных и классов (используя задание replace/replaceregexp в файлах параметров) и упаковывает её в jar-архив.">
+        <move file="${src.dir}/main/java/com/site/demo/AltShotManager.java"
+              tofile="${src.dir}/main/java/com/site/demo/ShotManager.java" />
+        <replace token="AltShotManager" value="ShotManager">
+            <fileset dir="${src.dir}/main/java/com/site/demo" includes="**/*.java"/>
+        </replace>
+        <replace token="AltShotManager" value="ShotManager">
+            <fileset dir="${src.dir}/test" includes="**/*.java"/>
+        </replace>
+    </target>
+</project>

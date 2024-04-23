@@ -1,0 +1,39 @@
+<ui:composition xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pt="jakarta.faces.passthrough" xmlns:f="jakarta.faces.core">
+    <h:form id="form">
+        <div class="x-input">
+            <p:outputLabel for="x" value="X:" indicateRequired="false"/>
+            <p:inputText id="x" value="#{shotManager.shot.x}" required="true"
+                         styleClass="form-input" pt:placeholder="(-5.0; 5.0)"
+                         pt:pattern="(?:-[43210]|\+?[01234])(?:[.,]\d{1,15})?"
+                         converter="XCoordinateConverter"/>
+        </div>
+        <div class="y-input">
+            <p:outputLabel for="y" value="Y:" indicateRequired="false"/>
+            <h:selectOneRadio id="y" value="#{shotManager.shot.y}" required="true" >
+                <f:selectItems value="#{shotManager.availableY}" var="y"
+                               itemLabel="#{y}" itemValue="#{y}"/>
+            </h:selectOneRadio>
+        </div>
+        <div class="r-input">
+            <p:outputLabel for="r" value="R:" indicateRequired="false"/>
+            <h:selectOneMenu id="r" value="#{shotManager.shot.r}" required="true" style="background: grey">
+                <f:selectItems value="#{shotManager.availableR}" var="r"
+                               itemLabel="#{r}" itemValue="#{r}"/>
+                <p:ajax event="change" oncomplete="updateGraph(value)"/>
+            </h:selectOneMenu>
+        </div>
+        <p:commandButton value="Попытаться"
+                         styleClass="button"
+                         oncomplete="updateGraph(value)"
+                         actionListener="#{shotManager.shoot()}"
+                         update=":table-results :msgs"/>
+        <p:remoteCommand name="shoot"
+                         actionListener="#{shotManager.shootPlot()}"
+                         immediate="true"
+                         oncomplete="updateGraph('')"
+                         update=":table-results :msgs"/>
+    </h:form>
+</ui:composition>
